@@ -1,16 +1,20 @@
-## Hi there 👋
+# Hi, I'm Sankar 👋
 
-<!--
-**Sankartk/Sankartk** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Software Engineer focused on cloud-native data platforms, AI-assisted DevOps tooling, and resilient distributed systems.
 
-Here are some ideas to get you started:
+## Featured Projects
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### Ops Copilot
+AI-powered DevOps runbook assistant with RAG retrieval and automated AWS incident response pipeline.
+
+Tech:
+Python • FAISS • Streamlit • AWS Lambda • Step Functions • ECS • EventBridge
+
+Repo:
+github.com/Sankartk/ops-copilot-bedrock
+
+## Skills
+Python | Java | AWS | Data Platforms | Distributed Systems | ETL | Terraform | DevOps
+
+## Certifications
+AWS Solutions Architect Associate
