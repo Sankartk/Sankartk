@@ -1,6 +1,6 @@
 # Hi, I'm Sankar 👋
 
-Backend and data engineer with 3+ years at Hexaware building production systems on AWS — Fannie Mae's mortgage data platform, ETL pipelines, and ML-backed financial services. I work closest to the data layer: ingestion, reconciliation, forecasting, and the APIs that sit on top.
+I'm Sankar, a backend and data engineer in Newark, DE. I work on the parts that don't make headlines but break everything when they fail — pipelines that never drop a message, reconciliation engines that explain their own breaks, APIs that make data actually usable. Lately I've been pushing AI into that same layer: LLMs that don't just flag anomalies but tell you why, agents that handle routine ops so no one gets paged at 2am.
 
 🌐 **[sankartk.dev](https://sankartk.dev)** — architecture write-ups, live dashboards, and project deep-dives
 
