@@ -1,55 +1,52 @@
-# Hi, I'm Sankar 👋
+# Hi, I'm Sankar
 
-I'm Sankar, a backend and data engineer in Newark, DE. I work on the parts that don't make headlines but break everything when they fail — pipelines that never drop a message, reconciliation engines that explain their own breaks, APIs that make data actually usable. Lately I've been pushing AI into that same layer: LLMs that don't just flag anomalies but tell you why, agents that handle routine ops so no one gets paged at 2am.
+I'm a software and data engineer in Newark, DE. Six years building pipelines and backend systems in finance — the parts nobody notices until they break.
 
-🌐 **[sankartk.dev](https://sankartk.dev)** — architecture write-ups, live dashboards, and project deep-dives
+The through-line in everything I build: **systems that don't trust their own input.** Pipelines that validate before they propagate. Automation that pauses before it does something permanent. Lately that's pulled me toward trading and AI — order books, backtesting, and the compliance layer that has to sit in front of AI-generated decisions.
 
----
-
-## Projects
-
-### 🟣 [FinFlow](https://sankartk.dev/projects/finflow) · [Repo](https://github.com/Sankartk/finflow)
-AI-native reconciliation engine built end-to-end: Kafka ingestion with checkpoint replay, a five-pass matching pipeline (exact → timing tolerance → fuzzy reference → amount threshold → Ollama LLM), pgvector cosine search for anomaly memory across runs, and a Strawberry GraphQL API with a Streamlit ops dashboard. **94.2% auto-match rate across 2,000 transactions. Zero external API costs.**
-
-`Python` `Kafka` `PostgreSQL` `pgvector` `Ollama` `FastAPI` `GraphQL` `Streamlit`
+**[sankartk.dev](https://sankartk.dev)** — every project below has a full write-up there.
 
 ---
 
-### 🔵 [Ops Copilot](https://sankartk.dev/projects/ops-copilot) · [Repo](https://github.com/Sankartk/ops-copilot-bedrock)
-FAISS-indexed runbook retrieval feeding a Bedrock remediation plan through a Step Functions approval gate — answers cite exact file and line number, nothing runs on production without explicit human sign-off. Swap one env var to go from Ollama local to AWS Bedrock.
+## What I've been building
 
-`Python` `FAISS` `AWS Bedrock` `Step Functions` `Lambda` `SNS` `SAM` `Streamlit`
+**[regwatch](https://github.com/Sankartk/regwatch)** · [write-up](https://sankartk.dev/projects/regwatch)
+A compliance gate for AI-generated trades. Five rules — position limits, restricted lists, wash trades, concentration, and an AI governance rule enforcing EU AI Act Article 14 (human approval + explainable rationale, or the trade doesn't execute). Pulls fresh SEC filings and has a local LLM draft candidate rules for human review. Every check lands in an immutable audit trail.
+`Python` `Ollama` `SEC EDGAR` `SQLite` `Streamlit`
 
----
+**[market-microstructure](https://github.com/Sankartk/market-microstructure)** · [write-up](https://sankartk.dev/projects/market-microstructure)
+A limit order book in C++20 that reads NASDAQ's actual wire format (ITCH 5.0) and detects spoofing, layering, momentum ignition, and quote stuffing in-process. Pool allocator, fixed-point prices, zero allocations after warmup. Measured: 673ns add / 29ns cancel — the README explains why my first numbers were wrong, which taught me more than the code did.
+`C++20` `CMake` `ITCH 5.0` `ctest`
 
-### 🟢 [CashCast](https://sankartk.dev/projects/cashcast) · [Repo](https://github.com/Sankartk/cashcast)
-Per-branch vault cash demand forecasting: Ridge Regression model per branch trained on 730 days of history, Isolation Forest for anomaly flags, 14-day forward horizon — **avg MAPE 9.1%**. Turns the standard 15–20% buffer guess into a data-backed order recommendation with confidence bands.
+**[alpha-engine](https://github.com/Sankartk/alpha-engine)** · [write-up](https://sankartk.dev/projects/alpha-engine)
+A backtester built to prove you wrong. Weights are shifted a day before touching returns (lookahead is structurally impossible), every rebalance pays spread + square-root market impact, and walk-forward validation exposes overfit strategies. Ships with momentum and mean-reversion strategies and a live paper-trading loop against Alpaca.
+`Python` `pandas` `Alpaca` `Streamlit` `pytest`
 
-`Python 3.12` `FastAPI` `scikit-learn` `SQLite` `SQLAlchemy` `pytest`
+**[FinFlow](https://github.com/Sankartk/finflow)** · [write-up](https://sankartk.dev/projects/finflow)
+AI-native reconciliation engine. Kafka ingestion with checkpoint replay, a five-pass matching pipeline (exact → timing → fuzzy reference → amount → LLM), and pgvector so the system remembers past anomalies. 94%+ auto-match rate, zero external API costs.
+`Python` `Kafka` `PostgreSQL` `pgvector` `Ollama` `GraphQL`
 
----
+**[CashCast](https://github.com/Sankartk/cashcast)** · [write-up](https://sankartk.dev/projects/cashcast)
+Branch vault cash forecasting. Ridge regression per branch over 730 days, Isolation Forest for anomalies, 14-day horizon with confidence bands — avg MAPE 9.1%. Turns the standard 15–20% "buffer guess" into a number with a reason behind it.
+`Python` `scikit-learn` `FastAPI` `Plotly`
 
-### ⬡ [FleetPulse](https://sankartk.dev/projects/fleetpulse) · [Repo](https://github.com/Sankartk/fleetpulse)
-Fleet maintenance REST API on Spring Boot + PostgreSQL — hourly scheduler catches overdue vehicles before anyone notices, idempotent alerting so the same event fires exactly once, role-based access control. **25+ endpoints, 16/16 integration tests green.**
+**[Ops Copilot](https://github.com/Sankartk/ops-copilot-bedrock)** · [write-up](https://sankartk.dev/projects/ops-copilot)
+RAG over your own runbooks for 2am incidents. Answers cite the exact file and line, and remediation pauses at an SNS approval gate — nothing touches production until a human says so. One env var switches between Ollama local and AWS Bedrock.
+`Python` `FAISS` `AWS Bedrock` `Step Functions` `SAM`
 
-`Java 21` `Spring Boot 3.2` `PostgreSQL` `Spring Data JPA` `Flyway` `Docker` `JUnit 5`
+**[FleetPulse](https://github.com/Sankartk/fleetpulse)** · [write-up](https://sankartk.dev/projects/fleetpulse)
+Fleet maintenance ops on Spring Boot + PostgreSQL. Hourly scheduler catches overdue vehicles, alerts are idempotent, 25+ endpoints, 16/16 integration tests green.
+`Java 21` `Spring Boot` `PostgreSQL` `Flyway` `Docker`
 
 ---
 
 ## Tech
 
-**Languages** — Python, SQL, Java, TypeScript  
-**Data & Databases** — PostgreSQL, Redshift, DynamoDB, Azure Synapse, SQLite, pandas, scikit-learn  
-**Cloud & Infra** — AWS (ECS, EKS, Glue, Lambda, S3, Step Functions, Bedrock), Azure, Terraform, GitLab CI/CD, Docker  
-**Frameworks** — Spring Boot 3, FastAPI, GraphQL, Next.js, Tailwind CSS  
-**BI / Analytics** — Tableau, Power BI, Alteryx
+**Languages** — Python, Java, C++, SQL, TypeScript
+**Data** — PostgreSQL, Kafka, Redshift, DynamoDB, pgvector, pandas, scikit-learn
+**Cloud** — AWS (Glue, Lambda, Step Functions, Bedrock, ECS), Azure Synapse, Terraform, Docker
+**Systems** — order books, backtesting engines, binary protocols, compliance pipelines
 
 ---
 
-## Certifications
-
-AWS Solutions Architect – Associate · Alteryx Designer Core · Rising Star Award — Hexaware
-
----
-
-📫 [LinkedIn](https://linkedin.com/in/sankartk11) · [Portfolio](https://sankartk.dev)
+[LinkedIn](https://linkedin.com/in/sankartk11) · [sankartk.dev](https://sankartk.dev) · karthicks399@gmail.com
