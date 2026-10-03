@@ -1,51 +1,55 @@
 # Hi, I'm Sankar
 
-I'm a software and data engineer in Newark, DE. Six years building pipelines and backend systems in finance — the parts nobody notices until they break.
+I'm a software and data engineer in Newark, DE. For six years I've built the behind-the-scenes systems of finance: programs that move data between systems and check that it matches. The kind of thing nobody notices until it breaks.
 
-The through-line in everything I build: **systems that don't trust their own input.** Pipelines that validate before they propagate. Automation that pauses before it does something permanent. Lately that's pulled me toward trading and AI — order books, backtesting, and the compliance layer that has to sit in front of AI-generated decisions.
+My habits are simple. **Check data the moment it arrives. Make problems loud, not quiet. Put a person in the loop before anything that can't be undone.** Lately that has pulled me toward trading and AI: order books, strategy testing, and the checks that have to sit in front of AI-made decisions.
 
-**[sankartk.dev](https://sankartk.dev)** — every project below has a full write-up there.
+**[sankartk.dev](https://sankartk.dev)** has a short write-up for every project below.
 
 ---
 
 ## What I've been building
 
-**[regwatch](https://github.com/Sankartk/regwatch)** · [write-up](https://sankartk.dev/projects/regwatch)
-A compliance gate for AI-generated trades. Five rules — position limits, restricted lists, wash trades, concentration, and an AI governance rule enforcing EU AI Act Article 14 (human approval + explainable rationale, or the trade doesn't execute). Pulls fresh SEC filings and has a local LLM draft candidate rules for human review. Every check lands in an immutable audit trail.
-`Python` `Ollama` `SEC EDGAR` `SQLite` `Streamlit`
-
-**[market-microstructure](https://github.com/Sankartk/market-microstructure)** · [write-up](https://sankartk.dev/projects/market-microstructure)
-A limit order book in C++20 that reads NASDAQ's actual wire format (ITCH 5.0) and detects spoofing, layering, momentum ignition, and quote stuffing in-process. Pool allocator, fixed-point prices, zero allocations after warmup. Measured: 673ns add / 29ns cancel — the README explains why my first numbers were wrong, which taught me more than the code did.
-`C++20` `CMake` `ITCH 5.0` `ctest`
-
-**[alpha-engine](https://github.com/Sankartk/alpha-engine)** · [write-up](https://sankartk.dev/projects/alpha-engine)
-A backtester built to prove you wrong. Weights are shifted a day before touching returns (lookahead is structurally impossible), every rebalance pays spread + square-root market impact, and walk-forward validation exposes overfit strategies. Ships with momentum and mean-reversion strategies and a live paper-trading loop against Alpaca.
-`Python` `pandas` `Alpaca` `Streamlit` `pytest`
+**[dlq-triage](https://github.com/Sankartk/dlq-triage)** · [write-up](https://sankartk.dev/projects/dlq-triage)
+When messages fail and pile up in a queue, are they one problem or twelve? This groups them by cause (in my test run, 24 messages turned out to be 3 problems), then lets a person send one group back: practice run first, slow and stoppable, with a log of who did what. The AI explanation is optional and never sees customer data.
+`Go` `GraphQL` `AWS SQS` `React` `TypeScript`
 
 **[FinFlow](https://github.com/Sankartk/finflow)** · [write-up](https://sankartk.dev/projects/finflow)
-AI-native reconciliation engine. Kafka ingestion with checkpoint replay, a five-pass matching pipeline (exact → timing → fuzzy reference → amount → LLM), and pgvector so the system remembers past anomalies. 94%+ auto-match rate, zero external API costs.
-`Python` `Kafka` `PostgreSQL` `pgvector` `Ollama` `GraphQL`
+The bank says a payment arrived on Aug 29; your books say Sep 1. Mistake or just timing? FinFlow compares two lists of payments and explains each mismatch, with simple checks first and a locally run AI model for the leftovers. Built and tested on generated transactions, not real bank data.
+`Python` `Kafka` `PostgreSQL` `Ollama` `GraphQL`
+
+**[regwatch](https://github.com/Sankartk/regwatch)** · [write-up](https://sankartk.dev/projects/regwatch)
+An AI suggests a trade. Who checks it before money moves? A checkpoint with five rules, such as "never more than 10% in one stock" and "an AI-made trade needs a human's OK and a written reason". Every check is saved. It can also read new SEC filings and suggest rules for a person to approve.
+`Python` `Ollama` `SQLite` `Streamlit`
+
+**[alpha-engine](https://github.com/Sankartk/alpha-engine)** · [write-up](https://sankartk.dev/projects/alpha-engine)
+Everyone has a trading strategy that "would have worked." This tries to prove it wouldn't: it never uses tomorrow's prices, charges trading costs, and tests on periods the strategy hasn't seen. Includes two simple strategies and a practice (paper) trading link to Alpaca.
+`Python` `pandas` `Alpaca` `Streamlit`
+
+**[market-microstructure](https://github.com/Sankartk/market-microstructure)** · [write-up](https://sankartk.dev/projects/market-microstructure)
+What happens inside an exchange between "buy" and "filled"? A C++ program that rebuilds an order book from NASDAQ's real data format and flags four kinds of cheating. My first speed test said 45 ns per order; the honest number was 673 ns, and the README explains why.
+`C++20` `CMake`
 
 **[CashCast](https://github.com/Sankartk/cashcast)** · [write-up](https://sankartk.dev/projects/cashcast)
-Branch vault cash forecasting. Ridge regression per branch over 730 days, Isolation Forest for anomalies, 14-day horizon with confidence bands — avg MAPE 9.1%. Turns the standard 15–20% "buffer guess" into a number with a reason behind it.
-`Python` `scikit-learn` `FastAPI` `Plotly`
+A branch orders next week's cash from gut feeling, plus 20% "just in case." This forecasts each branch's needs 14 days ahead and recommends an order amount. Built and tested on generated data for 6 branches, so its accuracy numbers describe the model, not a real bank.
+`Python` `scikit-learn` `FastAPI`
 
 **[Ops Copilot](https://github.com/Sankartk/ops-copilot-bedrock)** · [write-up](https://sankartk.dev/projects/ops-copilot)
-RAG over your own runbooks for 2am incidents. Answers cite the exact file and line, and remediation pauses at an SNS approval gate — nothing touches production until a human says so. One env var switches between Ollama local and AWS Bedrock.
-`Python` `FAISS` `AWS Bedrock` `Step Functions` `SAM`
+2am, a service is down, and the fix is somewhere in a 40-page runbook. Ask in plain English and it finds the matching part of your runbooks and names the file it came from. A separate AWS workflow can roll back a bad deployment, but only after a person approves. A demo with three sample runbooks.
+`Python` `Ollama` `AWS Lambda` `Step Functions`
 
 **[FleetPulse](https://github.com/Sankartk/fleetpulse)** · [write-up](https://sankartk.dev/projects/fleetpulse)
-Fleet maintenance ops on Spring Boot + PostgreSQL. Hourly scheduler catches overdue vehicles, alerts are idempotent, 25+ endpoints, 16/16 integration tests green.
-`Java 21` `Spring Boot` `PostgreSQL` `Flyway` `Docker`
+A truck breaks down; its service was six weeks overdue. FleetPulse tracks vehicles, drivers and maintenance, and every hour raises one alert per overdue vehicle (not a duplicate every hour). 26 API endpoints and 16 tests.
+`Java 21` `Spring Boot` `PostgreSQL` `Flyway`
 
 ---
 
 ## Tech
 
-**Languages** — Python, Java, C++, SQL, TypeScript
-**Data** — PostgreSQL, Kafka, Redshift, DynamoDB, pgvector, pandas, scikit-learn
-**Cloud** — AWS (Glue, Lambda, Step Functions, Bedrock, ECS), Azure Synapse, Terraform, Docker
-**Systems** — order books, backtesting engines, binary protocols, compliance pipelines
+**Languages** — Go, Python, Java, C++, SQL, TypeScript
+**Data** — PostgreSQL, Kafka, Redshift, DynamoDB, pandas, scikit-learn
+**Cloud** — AWS (SQS, Glue, Lambda, Step Functions, Bedrock, ECS), Azure Synapse, Terraform, Docker
+**Systems** — order books, strategy testing, message queues, compliance checks
 
 ---
 
